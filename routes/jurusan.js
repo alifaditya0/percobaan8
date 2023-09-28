@@ -20,11 +20,11 @@ router.get('/', function (req, res){
             })
         }
     })
-    });
+});
 
 router.post('/store', [
-    body('nama').notEmpty(),
-    body('nrp').notEmpty()
+    body('nama_jurusan').notEmpty(),
+
 ],(req, res) => {
     const error = validationResult(req);
     if(!error.isEmpty()){
@@ -33,10 +33,9 @@ router.post('/store', [
         });
     }
     let Data = {
-        nama: req.body.nama,
-        nrp: req.body.nrp
+        nama_jurusan: req.body.nama_jurusan,
     }
-    connection.query('insert into mahasiswa set ?', Data, function(err, rows){
+    connection.query('insert into jurusan set ?', Data, function(err, rows){
         if(err){
             return res.status(500).json({
                 status: false,
@@ -55,7 +54,7 @@ router.post('/store', [
 
 router.get('/(:id)', function (req, res) {
 let id=req.params.id;
-connection.query(`select * from mahasiswa where id_m = ${id}`, function (err, rows) {
+connection.query(`select * from jurusan where id_j = ${id}`, function (err, rows) {
     if(err) {
 return res.status(500).json({
 status: false,
@@ -72,7 +71,7 @@ message: 'Not Found',
 else{
 return res.status(200).json({ 
 status: true,
-message: 'Data Mahasiswa', 
+message: 'Data jurusan', 
 data: rows[0]
 })
 }
@@ -81,8 +80,7 @@ data: rows[0]
 
 
 router.patch('/update/:id', [ 
-body('nama').notEmpty(), 
-body('nrp').notEmpty()
+body('nama_jurusan').notEmpty(), 
 ], (req, res) => {
 const error = validationResult(req); 
 if(!error.isEmpty()){
@@ -91,11 +89,10 @@ return res.status(422).json({
 }
 let id = req.params.id;
 let Data = {
-    nama: req.body.nama,
-    nrp: req.body.nrp
+    nama_jurusan: req.body.nama_jurusan,
 }
 
-connection.query(`update mahasiswa set? where id_m = ${id}`, Data, function (err, rows) {
+connection.query(`update jurusan set? where id_j = ${id}`, Data, function (err, rows) {
 if(err){
 return res.status(500).json({
     status: false,
@@ -113,7 +110,7 @@ message: 'Update Success..!'
 
 router.delete('/delete/(:id)', function(req, res){
 let id= req.params.id;
-connection.query(`delete from mahasiswa where id_m = ${id}`, function (err, rows) { 
+connection.query(`delete from jurusan where id_j = ${id}`, function (err, rows) { 
     if (err) {
 return res.status(500).json({
 status: false,
